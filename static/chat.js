@@ -1,16 +1,19 @@
 // 受信済メッセージ一覧
 var messageBuffer =[];
 
-// user name
-var user = null;
+// メッセージ相手
+var user_list = new Set();
+
+// web socket コネクション
 var wshost = location.host;
 var ws = new WebSocket("ws://"+ wshost + "/ws/");
 
+// 自分のuser name取得
+var user = null;
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/user', true);
 xhr.withCredentials = true;
 xhr.onreadystatechange = function(){
-    // 本番用
     if (xhr.readyState === 4 && xhr.status === 200){
       console.log(xhr.response);
       user = xhr.response;
@@ -38,13 +41,12 @@ function messageComponent(msgs) {
 
 // ボタン押下時の送信処理
 function sendbutton() {
-    /// 送信雛形
     var msg = {};
-    createMessage(document.getElementById("msgbody").value,'thirao' , document.getElementById("to_send").value, msg);
+    createMessage(document.getElementById("msgbody").value, user , document.getElementById("to_send").value, msg);
     ws.send(JSON.stringify(msg));
 };
 
-// メッセージ送信処理
+// メッセージ作成
 function createMessage(message, from, to, ret) {
     var date = new Date;
     ret['date'] = date.getTime();
@@ -72,6 +74,23 @@ function delete_elem(cls_name){
     while (dom_obj) dom_obj.removeChild(dom_obj.firstChild);
 }
 
+// left menu
+function create_left_menu(){
+    for(i=0;i<messageBuffer.length;i++){
+        if(messageBuffer[i]['from'] != user){
+            user_list.add(messageBuffer[i]['from']);
+            continue;
+        }
+        if(messageBuffer[i]['to'] != user){
+            user_list.add(messageBuffer[i]['to']);
+        }
+    }
+    user_list.forEach(function(d){
+        var ret = "<p>"+d+"</p>"
+        $('div#chatroom_list').append(ret);
+    })
+}
+
 window.onload = function(){
     var delete_dom = document.getElementById('chatroom_list');
     delete_dom.addEventListener("click",function(){ delete_elem("text_field")}, false);
@@ -86,8 +105,12 @@ window.onload = function(){
     ws.onmessage = function (evt) {
         console.log(evt.data);
         msg = JSON.parse(evt.data);
-        messageBuffer.push(msg);
+        // バッファにいれる
+        Array.prototype.push.apply(messageBuffer,msg);
+        // 描画
         messageComponent(msg);
+        create_left_menu();
     };
+
 
 }

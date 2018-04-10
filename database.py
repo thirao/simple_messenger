@@ -110,7 +110,8 @@ class FriendDao:
 if __name__ =="__main__":
     a = AccountDao()
 
-    # print(a.get_all_account())
+    a.create_account('thirao','1111')
+    print(a.get_all_account())
 
     m = {
         "from": "thirao",
@@ -120,7 +121,5 @@ if __name__ =="__main__":
     }
 
     b = MessageDao()
-
-    # print(b.set_message(m))
-
+    print(b.set_message(m))
     print(b.get_message_by_name('thirao'))
