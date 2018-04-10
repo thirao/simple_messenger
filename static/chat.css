@@ -1,0 +1,30 @@
+body{
+    width:100%;
+    height:100%;
+    margin:0;
+}
+
+html{
+    width:100%;
+    height:100%;
+}
+
+div.bg_h{
+    height:100%;
+}
+
+div#left_mnu{
+    background-color:red;
+}
+
+div.chat_text_field{
+    height:80%;
+    background-color:paleturquoise;
+    overflow:auto;
+}
+
+div.chat_text_form{
+    background-color:orange;
+    height:20%;
+    width:100%;
+}

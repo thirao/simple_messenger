@@ -69,7 +69,7 @@ class IndexHandler(BaseHandler):
 class GetUserHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write(self.get_secure_cookie(self.cookie_username).decode('utf-8'))
+        self.write(self.current_user.decode('utf-8'))
 
 
 class MessageHandler(BaseHandler):

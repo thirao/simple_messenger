@@ -1,11 +1,10 @@
 // 受信済メッセージ一覧
 var messageBuffer =[];
 
-var uid = generateUuid();
-
 // user name
 var user = null;
-var ws = new WebSocket("ws://localhost/ws/");
+var wshost = location.host;
+var ws = new WebSocket("ws://"+ wshost + "/ws/");
 
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/user', true);
@@ -23,9 +22,7 @@ xhr.send(null);
 function messageComponent(msgs) {
     // domへメッセージ追加
     for(i=0;i<msgs.length;i++){
-        uname = document.getElementById('a').value;
-        console.log(uname);
-        if (msgs[i]['to'] != user){
+        if (msgs[i]['to'] == user){
             var ret = '<div class="panel panel-default" style="width:55%;margin-right:auto;"> <div class="panel-body">'
             + msgs[i]['message']
             + "</div></div>";
@@ -54,7 +51,6 @@ function createMessage(message, from, to, ret) {
     ret['from'] = get_username();
     ret['to'] = to;
     ret['message'] = message;
-    ret['uid'] = uid;
 }
 
 // cookie からuser取得
@@ -70,22 +66,6 @@ function get_username() {
 return "NoName";
 }
 
-// uuid generate
-function generateUuid() {
-    let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
-    for (let i = 0, len = chars.length; i < len; i++) {
-        switch (chars[i]) {
-            case "x":
-                chars[i] = Math.floor(Math.random() * 16).toString(16);
-                break;
-            case "y":
-                chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
-                break;
-        }
-    }
-    return chars.join("");
-}
-
 // chat画面メッセージ削除
 function delete_elem(cls_name){
     var dom_obj = document.getElementById(cls_name);
@@ -93,17 +73,12 @@ function delete_elem(cls_name){
 }
 
 window.onload = function(){
-    console.log(document.getElementById('a').value);
-
     var delete_dom = document.getElementById('chatroom_list');
-    delete_dom.addEventListener("click",function(){ delete_elem("a")}, false);
+    delete_dom.addEventListener("click",function(){ delete_elem("text_field")}, false);
 
     // websocketコネクション開始時
     ws.onopen = function() {
         var msg ={};
-        msg['message'] = "User: "+ uid + " joined";
-        msg['uid'] = uid;
-        msg['to'] = 'thirao';
         // ws.send(JSON.stringify(msg));
     };
 

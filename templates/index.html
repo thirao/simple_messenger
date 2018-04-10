@@ -31,10 +31,10 @@
   </head>
   <body>
 
-  <div class="container bg_h">
+  <div class="container-fluid bg_h">
     <div class="row bg_h">
         <!-- 左メニュー -->
-        <div class="col-md-2 bg_h" id="left_mnu">
+        <div class="col-md-2 bg_h hidden-xs hidden-sm" id="left_mnu">
             <div id="chatroom_list">
             <button id="del_btn">dom操作テスト</button>
             </div>
@@ -45,7 +45,7 @@
             <div class="row bg_h">
                 <!-- テキストフィールド -->
                 <div class="col-xs-12 chat_text_field" id="text_field">
-                    <div id="a">{{ uname }}</div>
+                    <div class="panel panel-default" style="width:55%;margin-right:auto;background-color:inherit"></div>
                 </div>
                 <!-- 送受信入力フィールド -->
                 <div class="col-xs-12 chat_text_form">
