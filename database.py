@@ -1,5 +1,7 @@
 import sqlite3
 import uuid
+
+#アカウント管理
 class AccountDao:
     dbname = 'account.db'
     def __init__(self):
@@ -9,9 +11,9 @@ class AccountDao:
         conn.commit()
         conn.close()
 
-
-# アカウント作成
+    # アカウント作成
     def create_account(self, user, password):
+        import uuid
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
 
@@ -26,8 +28,9 @@ class AccountDao:
         conn.commit()
         conn.close()
 
-# アカウント認証
+    # アカウント認証
     def is_account(self, user, password):
+        import uuid
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
 
@@ -50,6 +53,8 @@ class AccountDao:
         conn.close()
         return result
 
+
+# メッセージIO管理
 class MessageDao:
     dbname = 'messages.db'
     def __init__(self):
@@ -59,15 +64,16 @@ class MessageDao:
         conn.commit()
         conn.close()
 
-    def get_message_by_name(self,username):
+    def get_message_by_name(self, username):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
-        cur.execute("SELECT * FROM messages WHERE m_to = ?;", (username,))
+        cur.execute("SELECT * FROM messages WHERE m_to = ? OR m_from = ?;", (username, username, ))
         result = cur.fetchall()
+        r = [{"from": x[0], "to": x[1], "message": x[2], "date": x[3]} for x in result]
         conn.close()
-        return result
+        return r
 
-    def set_message(self,message):
+    def set_message(self, message):
         if not message.get('from', False) and message.get('to', False) and message.get('date', False) and message.get('message', False):
             return "Error"
 
@@ -90,19 +96,31 @@ class MessageDao:
         return result
 
 
-a = AccountDao()
+# フレンドリスト管理
+class FriendDao:
+    dbname = 'account.db'
+    def __init__(self):
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS friends(m_from, m_to, message, date);")
+        conn.commit()
+        conn.close()
 
-# print(a.get_all_account())
 
-m = {
-    "from": "thirao",
-    "to": "thirao2",
-    "message": "てすと",
-    "date": "1523348346.672"
-}
+if __name__ =="__main__":
+    a = AccountDao()
 
-b = MessageDao()
+    # print(a.get_all_account())
 
-# print(b.set_message(m))
+    m = {
+        "from": "thirao",
+        "to": "thirao2",
+        "message": "てすと",
+        "date": "1523348346.672"
+    }
 
-print(b.get_message())
+    b = MessageDao()
+
+    # print(b.set_message(m))
+
+    print(b.get_message_by_name('thirao'))
