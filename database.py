@@ -7,6 +7,7 @@ class AccountDao:
     def __init__(self):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
+        # アカウント管理テーブル
         cur.execute("CREATE TABLE IF NOT EXISTS account(id, name, password);")
         conn.commit()
         conn.close()
@@ -44,7 +45,7 @@ class AccountDao:
         else:
             return False
 
-# 全件取得
+# アカウント全件取得
     def get_all_account(self):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
@@ -102,24 +103,41 @@ class FriendDao:
     def __init__(self):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS friends(m_from, m_to, message, date);")
+        cur.execute("CREATE TABLE IF NOT EXISTS friends(my_user, your_user);")
+        conn.commit()
+        conn.close()
+
+# 友人リスト取得
+    def get_friend_list(self, username):
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM friends WHERE my_user = ? ;", (username,))
+        result = cur.fetchall()
+        conn.close()
+        return result
+
+# 友人リスト登録
+    def set_friend_list(self, from_user, to_user):
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute("INSERT INTO friends VALUES (?,?);", (from_user, to_user,))
         conn.commit()
         conn.close()
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     a = AccountDao()
 
-    a.create_account('thirao','1111')
+    # a.create_account('thirao2', '2222')
     print(a.get_all_account())
 
     m = {
-        "from": "thirao",
-        "to": "thirao2",
+        "from": "thirao2",
+        "to": "thirao",
         "message": "てすと",
         "date": "1523348346.672"
     }
 
     b = MessageDao()
-    print(b.set_message(m))
-    print(b.get_message_by_name('thirao'))
+    # print(b.set_message(m))
+    print(b.get_message())

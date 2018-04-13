@@ -149,8 +149,8 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
 
         # 接続中のユーザーへ送信
         for u, h in self.nodes.items():
-            logging.info(u.decode('utf-8') + ": to" + msg['to'])
-            if msg['to'] == u.decode('utf-8') or msg['from'] == u.decode('utf-8'):
+            logging.info(u.decode('utf-8') + ":to " + msg['to'])
+            if (msg['to'] == u.decode('utf-8')) or (msg['from'] == u.decode('utf-8')):
                 h.write_message(json.dumps([msg]))
 
     # 終了時の処理
