@@ -2,7 +2,7 @@ body{
     width:100%;
     height:100%;
     margin:0;
-    padding-top:0px;
+    padding-top:53px;
 }
 
 html{
@@ -19,8 +19,11 @@ div#left_mnu{
     background-color:silver;
     padding-left:0px;
     padding-right:0px;
-    height:100vh;
-
+    height:calc(100vh - 60px);
+    position:absolute;
+    width:20vh;
+    z-index: 2;
+    margin-left:-15px;
 }
 
 

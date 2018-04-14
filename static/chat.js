@@ -85,13 +85,21 @@ function createMessage(message, from, to, ret) {
     ret['message'] = message;
 }
 
-var ChatFieldComponent = function(){
-    this.chatfield_stats = false;
+
+
+function ToggleRoomList(){
+    //
+
+    var rlist = document.getElementById('left_mnu').style.visibility;
+    console.log(rlist =='hidden');
+    if(rlist =='hidden'){
+        document.getElementById('left_mnu').style.visibility = "visible";
+    }else{
+        document.getElementById('left_mnu').style.visibility = "hidden";
+    }
 }
 
-ChatFieldComponent.prototype.toggle_chatfield = function(){
-    this.chatfield_stats = this.chatfield_stats ? false : true;
-}
+
 
 
 
