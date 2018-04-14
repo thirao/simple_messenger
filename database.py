@@ -130,14 +130,16 @@ if __name__ == "__main__":
 
     # a.create_account('thirao2', '2222')
     print(a.get_all_account())
-
-    m = {
-        "from": "thirao2",
-        "to": "thirao",
-        "message": "てすと",
-        "date": "1523348346.672"
-    }
-
     b = MessageDao()
+    for x in range(10):
+        m = {
+            "from": "thirao2",
+            "to": "thirao",
+            "message": "てすと",
+            "date": str(1523348346.672 + x)
+        }
+        b.set_message(m)
+
+
     # print(b.set_message(m))
     print(b.get_message())

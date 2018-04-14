@@ -22,7 +22,6 @@ class Application(tornado.web.Application):
             (r"/ws/", ChatHandler),
             (r"/login", LoginHandler),
             (r"/logout", LogoutHandler),
-            (r"/msg", MessageHandler),
             (r"/user", GetUserHandler)
 
         ]
@@ -70,13 +69,6 @@ class GetUserHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.write(self.current_user.decode('utf-8'))
-
-
-class MessageHandler(BaseHandler):
-    @tornado.web.asynchronous
-    @tornado.web.authenticated
-    def get(self):
-        pass
 
 
 # ログインページ
@@ -149,8 +141,8 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
 
         # 接続中のユーザーへ送信
         for u, h in self.nodes.items():
-            logging.info(u.decode('utf-8') + ":to " + msg['to'])
-            if (msg['to'] == u.decode('utf-8')) or (msg['from'] == u.decode('utf-8')):
+            logging.info(u.decode('utf-8') + ": send message to: " + msg.get('to', "Empty User"))
+            if (msg.get('to', None) == u.decode('utf-8')) or (msg.get('from',None) == u.decode('utf-8')):
                 h.write_message(json.dumps([msg]))
 
     # 終了時の処理
@@ -162,7 +154,7 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
 def main():
     # tornadoのコマンドラインオプションの設定
     options.define('port', type=int, default='80')
-    options.define('debug', type=bool, default=True)
+    options.define('debug', type=bool, default=False)
     tornado.options.parse_command_line()
     app = Application()
     server = tornado.httpserver.HTTPServer(app)
