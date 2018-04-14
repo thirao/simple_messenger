@@ -42,7 +42,7 @@ class BaseHandler(tornado.web.RequestHandler):
     cookie_username = "username"
     def get_current_user(self):
         username = self.get_secure_cookie(self.cookie_username)
-        logging.info('BaseHandler - username: %s' % username)
+        # logging.info('BaseHandler - username: %s' % username)
         if not username: return None
         return tornado.escape.utf8(username)
 
@@ -98,6 +98,7 @@ class LoginHandler(BaseHandler):
 # ログアウトページ
 class LogoutHandler(BaseHandler):
     def get(self):
+        logging.info("Logout User: %s", self.get_current_user())
         self.clear_current_user()
         self.redirect('/')
 
@@ -147,8 +148,10 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
 
     # 終了時の処理
     def on_close(self):
-        d = self.nodes.pop(self.get_secure_cookie('username'))
-        self.node.remove(self)
+        if self.nodes.get(self.get_secure_cookie('username'),False):
+            d = self.nodes.pop(self.get_secure_cookie('username'))
+        if self in self.node:
+            self.node.remove(self)
 
 
 def main():

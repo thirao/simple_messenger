@@ -152,8 +152,8 @@ function create_left_menu(){
 //左メニューのチャット相手追加
 function createNewChatRoom(){
     var n = document.getElementById('new_chat_user').value;
-    if(n ==null || n.length==0){
-        alert("Error");
+    if(n ==null || n.length==0 || n == user){
+        console.error("Error");
         return null;
     }else{
     user_list.add(n);

@@ -22,7 +22,7 @@ div#left_mnu{
     height:calc(100vh - 60px);
     position:absolute;
     width:20vh;
-    z-index: 2;
+    z-index: 3;
     margin-left:-15px;
 }
 
