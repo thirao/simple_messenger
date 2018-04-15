@@ -14,6 +14,7 @@ import tornado.escape
 from database import AccountDao, MessageDao
 import settings as s
 
+
 class Application(tornado.web.Application):
     def __init__(self):
         # ルーティングに対応するハンドラの登録
