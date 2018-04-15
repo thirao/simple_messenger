@@ -54,8 +54,8 @@ function messageComponent(msgs) {
                 $('<div />').attr({
                     style:"color:silver"
                     }).text(
-                        (date.getMonth()+1) + '/' + (date.getDate()+1) +' '+
-                        (date.getHours()+1)+ ':'+(date.getMinutes()+1)
+                        (date.getMonth()+1) + '/' + (date.getDate()) +' '+
+                        (date.getHours())+ ':'+(("0"+date.getMinutes()).slice(-2))
                     )
             );
 
