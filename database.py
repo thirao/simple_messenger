@@ -34,10 +34,18 @@ class AccountDao:
         import uuid
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
-
-        uid = uuid.uuid4()
-
         cur.execute("SELECT name FROM account WHERE name=? AND password=?;", (user, password,))
+        result = cur.fetchall()
+        conn.close()
+        if len(result) != 0:
+            return True
+        else:
+            return False
+
+    def is_exist_user(self, user):
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute("SELECT name FROM account WHERE name=?;", (user,))
         result = cur.fetchall()
         conn.close()
         if len(result) != 0:

@@ -23,8 +23,8 @@ class Application(tornado.web.Application):
             (r"/ws/", ChatHandler),
             (r"/login", LoginHandler),
             (r"/logout", LogoutHandler),
-            (r"/user", GetUserHandler)
-
+            (r"/user", GetUserHandler),
+            (r"/signup", CreateAccountHandler),
         ]
         # tornadoの設定関連
         settings = dict(
@@ -70,6 +70,29 @@ class GetUserHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.write(self.current_user.decode('utf-8'))
+
+
+class CreateAccountHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("signup.html")
+
+    def post(self):
+        a = AccountDao()
+        self.check_xsrf_cookie()
+
+        username = self.get_argument("username")
+        password = self.get_argument("password")
+
+        a = AccountDao()
+
+        if a.is_exist_user(username,):
+            logging.info("Account Exist: %s" % (username,))
+            self.send_error(403)
+
+        else:
+            a.create_account(username, password)
+            logging.info("New Account: %s" % (username,))
+            self.redirect("/")
 
 
 # ログインページ
