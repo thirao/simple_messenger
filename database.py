@@ -136,7 +136,7 @@ if __name__ == "__main__":
             "from": "thirao2",
             "to": "thirao",
             "message": "てすと",
-            "date": str(1523348346.672 + x)
+            "date": str(1523348346672 + x)
         }
         b.set_message(m)
 
