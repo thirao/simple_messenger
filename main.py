@@ -12,7 +12,7 @@ import json
 import logging
 import tornado.escape
 from database import AccountDao, MessageDao
-
+import settings as s
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -28,7 +28,7 @@ class Application(tornado.web.Application):
         # tornadoの設定関連
         settings = dict(
             login_url="login",
-            cookie_secret='k5oy9qv76V2GWFKW3A56El3v6O33hR0M',
+            cookie_secret=s.COOKIE_SECRET,
             static_path=os.path.join(os.path.dirname(__file__), "static"),
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             xsrf_cookies=True,
@@ -143,7 +143,7 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
         # 接続中のユーザーへ送信
         for u, h in self.nodes.items():
             logging.info(u.decode('utf-8') + ": send message to: " + msg.get('to', "Empty User"))
-            if (msg.get('to', None) == u.decode('utf-8')) or (msg.get('from',None) == u.decode('utf-8')):
+            if (msg.get('to', False) == u.decode('utf-8')) or (msg.get('from', False) == u.decode('utf-8')):
                 h.write_message(json.dumps([msg]))
 
     # 終了時の処理
