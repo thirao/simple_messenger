@@ -128,7 +128,8 @@ class FriendDao:
 if __name__ == "__main__":
     a = AccountDao()
 
-    # a.create_account('thirao2', '2222')
+    a.create_account('thirao2', '2222')
+    a.create_account('thirao','1111')
     print(a.get_all_account())
     b = MessageDao()
     for x in range(10):

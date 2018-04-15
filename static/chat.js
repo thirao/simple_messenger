@@ -33,9 +33,10 @@ function messageComponent(msgs) {
             console.log("Other Message: ");
             var date = new Date(Number(msgs[i]['date']));
             var ret = '<div style="width:55%;margin-right:auto;margin-bottom:5px;text-align:right;">'+
-            '<div class="panel panel-default" style="margin-bottom:0px;text-align:left;"><div class="panel-body">'
+            '<div class="panel panel-default" style="margin-bottom:0px;text-align:left;"><div class="panel-body">'+
+            '<p style="word-wrap:break-word;margin:0;">'
             + msgs[i]['message']
-            +'</div></div><div style="color:silver">'+
+            +'</p></div></div><div style="color:silver">'+
             (date.getMonth()+1) + '/'+(date.getDate()+1) +' '+(date.getHours()+1)+ ':'+(date.getMinutes()+1)+
             '</div></div>';
             $('div#text_field').append(ret);
@@ -43,10 +44,10 @@ function messageComponent(msgs) {
             console.log("My Message: ");
             var date = new Date(Number(msgs[i]['date']));
             var ret = '<div style="width:55%;margin-left:auto;margin-bottom:5px;text-align:right;">'+
-            '<div class="panel panel-default" style="margin-bottom:0px;text-align:left;">'+
-            '<div class="panel-body" style="background-color:skyblue">'
+            '<div class="panel panel-default" style="margin-bottom:0px;text-align:left;background-color:skyblue">'+
+            '<div class="panel-body"><p style="word-wrap:break-word;margin:0;">'
             + msgs[i]['message']
-            +'</div></div><div style="color:silver">'+
+            +'</p></div></div><div style="color:silver">'+
             (date.getMonth()+1) + '/'+(date.getDate()+1) +' '+(date.getHours()+1)+ ':'+(date.getMinutes()+1)+
             '</div></div>';
 
@@ -60,6 +61,7 @@ function sendbutton() {
     var msg = {};
     createMessage(document.getElementById("msgbody").value, user , myuser, msg);
     ws.send(JSON.stringify(msg));
+    document.getElementById("msgbody").value = "";
 };
 
 // 送信メッセージ作成

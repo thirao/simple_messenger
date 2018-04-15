@@ -156,7 +156,7 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
 
 def main():
     # tornadoのコマンドラインオプションの設定
-    options.define('port', type=int, default='80')
+    options.define('port', type=int, default='8000')
     options.define('debug', type=bool, default=False)
     tornado.options.parse_command_line()
     app = Application()
