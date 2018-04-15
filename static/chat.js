@@ -26,24 +26,26 @@ xhr.send(null);
 // チャット画面(右)の生成
 function messageComponent(msgs) {
     console.log("Message Creating");
-
+    var latest = 0;
     // メッセージ追加
     for(i=0,l=msgs.length;i<l;i++){
         if (msgs[i]['to'] == user && msgs[i]['from'] == myuser){
             console.log("Other Message: ");
             var date = new Date(Number(msgs[i]['date']));
-            var ret = '<div style="width:55%;margin-right:auto;margin-bottom:5px;text-align:right;">'+
+            var ret = '<div style="width:55%;margin-right:auto;margin-bottom:5px;text-align:right;"'+
+            'id ="' + Number(msgs[i]['date']) +'">'+
             '<div class="panel panel-default" style="margin-bottom:0px;text-align:left;"><div class="panel-body">'+
-            '<p style="word-wrap:break-word;margin:0;">'
-            + msgs[i]['message']
-            +'</p></div></div><div style="color:silver">'+
+            '<p style="word-wrap:break-word;margin:0;">'+
+            msgs[i]['message'] +
+            '</p></div></div><div style="color:silver">'+
             (date.getMonth()+1) + '/'+(date.getDate()+1) +' '+(date.getHours()+1)+ ':'+(date.getMinutes()+1)+
             '</div></div>';
             $('div#text_field').append(ret);
         }else if(msgs[i]['from'] == user && msgs[i]['to'] == myuser){
             console.log("My Message: ");
             var date = new Date(Number(msgs[i]['date']));
-            var ret = '<div style="width:55%;margin-left:auto;margin-bottom:5px;text-align:right;">'+
+            var ret = '<div style="width:55%;margin-left:auto;margin-bottom:5px;text-align:right;"'+
+            'id ="' + Number(msgs[i]['date']) +'">'+
             '<div class="panel panel-default" style="margin-bottom:0px;text-align:left;background-color:skyblue">'+
             '<div class="panel-body"><p style="word-wrap:break-word;margin:0;">'
             + msgs[i]['message']
@@ -53,7 +55,12 @@ function messageComponent(msgs) {
 
             $('div#text_field').append(ret);
         }
+        if (latest < Number(msgs[i]['date'])){latest = Number(msgs[i]['date']);}
+
     }
+    location.href="#"+latest.toString();
+
+
 }
 
 // 送信ボタン押下時の送信処理
